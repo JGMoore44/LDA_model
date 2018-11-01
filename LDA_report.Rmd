@@ -1,26 +1,24 @@
 ---
-title: "Linear Discriminant Analysis"
+title: "Classification and Linear Discriminant Analysis"
 author: "Jimmy G. Moore"
 date: "September 7, 2018"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE,warning=FALSE,message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Problem 1
 ### Perform k-nearest neighbor classification using the training data with k = 1. Use this model to predict the class of each observation in the training data set. How many observations were incorrectly classified. Is this good?
 
-To start this problem, we will load our training and test sets.
+The point of this problem is to showcase a scenario of **overfitting**. To start this problem, we will load our training and test sets.
 
 ```{r}
 #load traing set
-setwd("C:/2018_Fall/STAT_488/homework")
-trainSet = read.csv("PA_HW1_train.csv")
-
+trainSet = read.csv("C:/Users/James Moore/Documents/LDA_model/dataFiles/PA_HW1_train.csv")
 #load test set
-testSet = read.csv("PA_HW1_test.csv")
+testSet = read.csv("C:/Users/James Moore/Documents/LDA_model/dataFiles/PA_HW1_test.csv")
 ```
 
 Next we will conduct k-nearest neighbor on our training set with k =  1 and we are predicting each observation in our training set.
@@ -35,7 +33,7 @@ modelTrain = knn(cbind(trainSet$x1,trainSet$x2),
                  prob = TRUE)
 table(modelTrain,trainSet$col)
 ```
-This is a perfect classification. There are no observations that are incorrectly classified. However, this is not good, rather it is expected, because our model was trained on the same set that we are predicting which makes it an incredibly overfit model. I would not use this model.
+This is a perfect classification. There are no observations that are incorrectly classified. However, this is not good, rather it is expected, because our model was trained on the same set that we are predicting which makes it an incredibly **overfit** model. I would not use this model.
 
 ### Now we will build a knn model with our training set to predict on our test set
 ```{r}
@@ -110,10 +108,11 @@ ggplot(data = iris, aes(x = Sepal.Length,y = Sepal.Width,color = Species))+
 ## Problem 3
 ### Perform linear discriminant analysis using the iris data with only Sepal.Length and Sepal.Width as predictors. Make predictions about the species of each iris and create a confusion matrix for these predictions.
 
-```{r}
+```{r,warning=FALSE,message=FALSE}
 library(MASS)
 library(VGAM)
 library(caret)
+library(e1071)
 
 #Build Model
 ldaModel = lda(Species~Sepal.Width+Sepal.Length,data = iris)
